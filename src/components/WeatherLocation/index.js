@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Location from './Location';
 import WeatherData from './WeatherData'
+import transformWeather from '../../services/transformWeather'
+import {api_weather} from '../../constants/api_url'
+
+
 
 import './style.css'
 import {
@@ -9,29 +14,7 @@ import {
 } from '../../constants/weather'
 
 
-const data={
-    temperature:18,
-    weatherState:SUN,
-    humidity:23,
-    wind:"18m/s"
 
-}
-
-
-
-/*const data2={
-    temperature:35,
-    weatherState:CLOUDY,
-    humidity:50,
-    wind:"7m/s"
-
-}*/
-
-
-const location="Buenos Aires,ar";
-const api_key="6831e58c07cd64a1c39225acabc3bca0";
-const url_base="http://api.openweathermap.org/data/2.5/weather";
-const api_weather= `${url_base}?q=${location}&appid=${api_key}`;
 
 
 class  WeatherLocation extends Component {
@@ -41,27 +24,38 @@ class  WeatherLocation extends Component {
         super();
         this.state={
           city:"Buenos aires",
-          data :data
+          data :null
         }
+
+        console.log("constructor");
+
     }
 
-    getWeatherState= weather_data =>{
-        return SUN;     
+
+    componentDidMount() {
+        console.log("componentDidMount");
+        
+    }
+    
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log("componentDidUpdate");
+        
     }
 
-    getData = weather_data=>{
-        const {humidity, temp} =weather_data.main;
-        const {speed} =weather_data.wind;
-        const weatherState =this.getWeatherState(weather_data);
-        const data ={
-            humidity,
-            temperature:temp,
-            weatherState,
-            wind:`${speed} m/s`,
-
-        }
-        return data;
+    
+    componentWillMount() {
+        console.log("UNSAFE componentWillMount");
+        this.handleUpdateClick();
+        
     }
+    
+
+    componentWillUpdate(nextProps, nextState) {
+        console.log("UNSAFE componentWillUpdate");
+    }
+    
+    
 
 
     handleUpdateClick=()=>{
@@ -72,34 +66,34 @@ class  WeatherLocation extends Component {
                return resolve.json();
             }
         ).then(data=>{
-            console.log(data);
-            const newWeather = this.getData(data);
-            console.log(newWeather);
-
+            
+            console.log("Resultado del click :",data);
+            const newWeather = transformWeather(data);
+            //console.log(newWeather);
             this.setState({data:newWeather});
+            
         });
 
-        /*this.setState({
-            city:"Barcelona",
-            data :data2
-        });*/
 
     }
 
     render(){
+
+        console.log("render");
         const {city,data}=this.state;
         return (
         <div className="weatherLocationCont">
             <Location city={city}></Location>
-            <WeatherData data={data}></WeatherData>
-            <button onClick={this.handleUpdateClick}>Actualizar</button>
+            {data ?<WeatherData data={data}></WeatherData>:<CircularProgress/>}
+            
         </div>
         )
     };
 
 
 
-
 }
 
 export default WeatherLocation;
+
+//<button onClick={this.handleUpdateClick}>Actualizar</button>
