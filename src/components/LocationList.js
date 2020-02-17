@@ -1,26 +1,33 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import WeatherLocation from './WeatherLocation';
+import './style.css'
 
 
 
 
-const strToComponents = cities =>{
-    console.log("cities on str",cities);
-    cities.map(city =>{
-        console.log("city",city);
-    });
-    return (
-        cities.map((city, index)=><WeatherLocation key={city} city={city}/>)   
+
+
+const LocationList = ({cities,onSelectedLocation}) =>{
+
+    const handledWeatherLocationClick =city =>{
+            console.log("handledWeatherLocationClick");
+            onSelectedLocation(city);
+    }
+
+    const strToComponents = cities =>(
+        cities.map((city, index)=>
+            <WeatherLocation 
+         
+                key={city} 
+                city={city}
+                onWeatherLocationClick={()=>handledWeatherLocationClick(city)}
+            />)   
     );
-}
+    
 
-
-const LocationList = ({cities}) =>{
-
-    console.log(cities);
     return (
-        <div>
+        <div className="locationList">
             {strToComponents(cities)}
         </div>
     );
@@ -46,7 +53,7 @@ const LocationList = ({cities}) =>{
 
 LocationList.propTypes={
     cities: PropTypes.array.isRequired,
-
+    onSelectedLocation:PropTypes.func,
 }
 
 
