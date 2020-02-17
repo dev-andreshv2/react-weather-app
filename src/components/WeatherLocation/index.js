@@ -9,10 +9,7 @@ import getUrlWeatherByCity from '../../services/getUrlWeatherByCity';
 
 
 import './style.css'
-import {
-    SUN,
-    CLOUDY
-} from '../../constants/weather'
+
 
 
 class  WeatherLocation extends Component {
@@ -84,6 +81,7 @@ class  WeatherLocation extends Component {
 
         return (
         <div className="weatherLocationCont" onClick={onWeatherLocationClick}>
+            
             <Location city={city}></Location>
             {data ?<WeatherData data={data}></WeatherData>:<CircularProgress/>}
             
