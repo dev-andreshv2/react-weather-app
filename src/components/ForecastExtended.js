@@ -38,26 +38,64 @@ class ForecastExtended extends Component {
 
 
     componentDidMount(){
-        const url_forecast = `${url_base}?q=${this.props.city}&appId=${api_key}`;
+       this.updateCity (this.props.city);
+    }
+
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.city!==this.props.city){
+            this.setState({forecastData:null});
+            this.updateCity(nextProps.city);
+        }        
+    }
+
+
+    updateCity = (city) =>{
+        console.log("updateCity",city);
+        const url_forecast = `${url_base}?q=${city}&appId=${api_key}`;
         fetch(url_forecast).then(
             data=>(data.json())
         ).then(
             weatherData =>{
-                console.log(weatherData);
+                console.log("weatherData",weatherData);
                 const forecastData = transformForecast(weatherData);
+                console.log("forecastData",forecastData);
                 //this.setState({forecastData:forecastData} );
-                //this.setState({forecastData} );
+                this.setState({forecastData} ); //Simplificado
             }
         );
     }
 
 
 
-    renderForecastDays(){
-        return "render items ";
-        /*return days.map(day=>(
-            <ForecastItem weekDay ={day} hour={10} data={data}></ForecastItem>
-        ));*/
+
+    /*componentDidMount(){
+        const url_forecast = `${url_base}?q=${this.props.city}&appId=${api_key}`;
+        fetch(url_forecast).then(
+            data=>(data.json())
+        ).then(
+            weatherData =>{
+                console.log("weatherData",weatherData);
+                const forecastData = transformForecast(weatherData);
+                console.log("forecastData",forecastData);
+                //this.setState({forecastData:forecastData} );
+                this.setState({forecastData} ); //Simplificado
+            }
+        );
+    }*/
+
+
+
+    renderForecastDays(forecastData){
+
+        return forecastData.map(forecast=>(
+            <ForecastItem 
+                key= {`${forecast.weekDay}${forecast.hour}`}
+                weekDay ={forecast.weekDay} 
+                hour={forecast.hour} 
+                data={forecast.data}>
+            </ForecastItem>
+        ));
     }
 
 
@@ -75,15 +113,11 @@ class ForecastExtended extends Component {
             <div>
                 <h2 className="forecast-title">Pronostico extendido para {city}</h2>
                 {forecastData ?
-                    this.renderForecastDays():
+                    this.renderForecastDays(forecastData):
                     this.renderProgress()    
                 }
-
             </div>
-
-            
         );
-
     }
 
 
