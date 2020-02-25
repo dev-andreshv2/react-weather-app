@@ -8,7 +8,7 @@ import {SET_CITY} from '../actions/index'
       switch(action.type){
         
         case SET_CITY:
-            return {...state, city:action.value}
+            return action.value
         default :
             return state;
       }
