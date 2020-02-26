@@ -8,18 +8,18 @@ export const cities = (state ={}, action)=>{
         case SET_FORECAST_DATA :
            const {city, forecastData}= action.payload;
            //return {...state, [city]:{forecastData:forecastData, weather:null}}
-             return {...state, [city]:{forecastData}}
+             return {...state, [city]:{...state[city], forecastData, forecastDataDate:new Date()}}
 
         case GET_WEATHER_CITY:{
             const city = action.payload;
-            return {...state , [city]:{weather:null}};
+            return {...state , [city]:{...state[city],weather:null}};
         }
 
         case SET_WEATHER_CITY:{
 
             console.log("Action .payload ->",action.payload );
             const {city, weather} = action.payload;
-            let statex = {...state , [city]:{weather}};
+            let statex = {...state , [city]:{...state[city],weather}};
            
             console.log("Estado modificado ", statex);
             return statex;

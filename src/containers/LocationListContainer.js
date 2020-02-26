@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
+import  { bindActionCreators } from 'redux';
+
 import {connect} from 'react-redux'
-import {setSelectedCity} from '../actions'
 import PropTypes from 'prop-types'
 import LocationList from '../components/LocationList'
-import {setWeather} from '../actions'
-import {getWeatherCities} from '../reducers'
+import {getWeatherCities,getCity} from '../reducers'
+
+//import {setSelectedCity,setWeather} from '../actions'
+import * as actions from '../actions'
 
 class LocationListContainer extends Component {
     
-  constructor(){
-    super();
-  }
+
   
   componentDidMount() {
     console.log("montando informacion-------------------------------------------------------------------");
-    this.props.setWeather(this.props.cities);
+    const {setWeather, setSelectedCity, cities, city}=this.props;
+    setWeather(cities);
+    setSelectedCity(city);
+
   }
 
 
@@ -29,32 +33,35 @@ class LocationListContainer extends Component {
 
     handledSelectionLocation= city=>{
         console.log("Burbuja ---> handledSelectionLocation",city);
-        this.props.dispatchSetCity(city);
+        this.props.setSelectedCity(city);
     }
 
 }
 
 
 LocationListContainer.propTypes={
-    dispatchSetCity:PropTypes.func.isRequired,  
+    setSelectedCity:PropTypes.func.isRequired,  
     cities:PropTypes.array.isRequired,
     citiesWeather:PropTypes.array,
   }
   
-  
+  /*
   const mapDispatchToPropsActions =(dispatch)=>({
     //dispatchSetCity: value =>dispatch(setCity(value))
-    dispatchSetCity: payload =>dispatch(setSelectedCity(payload)),
+    setSelectedCity: payload =>dispatch(setSelectedCity(payload)),
     setWeather:cities=>dispatch(setWeather(cities))
   });
+
+  */
+ const mapDispatchToPropsActions =(dispatch)=>bindActionCreators(actions, dispatch);
 
 
   
   const mapStateToProps =state=>{
-  
-    console.log("state-map", state);
+  console.log("state-map", state);
   return ({
-    citiesWeather:getWeatherCities(state)
+    citiesWeather:getWeatherCities(state),
+    city:getCity(state)
   });
 }  
 ;

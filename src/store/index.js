@@ -6,7 +6,7 @@ import reducers from '../reducers'
 
 import thunk from 'redux-thunk';
 const initialState ={
-  city:'Buenos aires, ar'
+  city:'Cali, co'
 };
 
 

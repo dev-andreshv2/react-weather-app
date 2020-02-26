@@ -13,11 +13,11 @@ import { createSelector}  from 'reselect'
 export default combineReducers({
     city, 
     cities
-})
+});
 
 
 
-//export const getCity = createrSelector (state=> state.city, city =>city);
+export const getCity = createSelector (state=> state.city, city =>city);
 
 
 export const getForecastDataaFromCities =state =>(_getForecastDataaFromCities (state.cities , state.city));
