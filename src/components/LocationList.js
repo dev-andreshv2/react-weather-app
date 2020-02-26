@@ -15,13 +15,17 @@ const LocationList = ({cities,onSelectedLocation}) =>{
             onSelectedLocation(city);
     }
 
+    console.log("Todas las ciudades ....");
     const strToComponents = cities =>(
         cities.map((city, index)=>
+                
+
             <WeatherLocation 
          
-                key={city} 
-                city={city}
-                onWeatherLocationClick={()=>handledWeatherLocationClick(city)}
+                key={city.key} 
+                city={city.name}
+                onWeatherLocationClick={()=>handledWeatherLocationClick(city.name)}
+                data={city.data}
             />)   
     );
     
